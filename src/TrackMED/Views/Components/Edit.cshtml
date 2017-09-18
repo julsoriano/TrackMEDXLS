@@ -1,0 +1,136 @@
+﻿@model TrackMED.Models.Component
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<form asp-action="Edit">
+    <div class="form-horizontal">
+        <h4>Component</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+
+        <div class="form-group">
+            <label asp-for="assetnumber" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="assetnumber" class="form-control" />
+                <span asp-validation-for="assetnumber" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="imte" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="imte" class="form-control" />
+                <span asp-validation-for="imte" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="serialnumber" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="serialnumber" class="form-control" />
+                <span asp-validation-for="serialnumber" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="imteModule" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="imteModule" class="form-control" />
+                <span asp-validation-for="imteModule" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                @Html.DropDownList("DescriptionID", null, htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
+                <span asp-validation-for="DescriptionID" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Owner" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                @Html.DropDownList("OwnerID", null, htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
+                <span asp-validation-for="OwnerID" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ServiceProvider" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                @Html.DropDownList("ServiceProviderID", null, htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
+                <span asp-validation-for="ServiceProviderID" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Model_Manufacturer" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                @Html.DropDownList("Model_ManufacturerID", null, htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
+                <span asp-validation-for="Model_ManufacturerID" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Status" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                @Html.DropDownList("StatusID", null, htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
+                <span asp-validation-for="StatusID" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="CalibrationDate" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="CalibrationDate" class="form-control" />
+                <span asp-validation-for="CalibrationDate" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="CalibrationInterval" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="CalibrationInterval" class="form-control" />
+                <span asp-validation-for="CalibrationInterval" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="MaintenanceDate" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="MaintenanceDate" class="form-control" />
+                <span asp-validation-for="MaintenanceDate" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="MaintenanceInterval" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="MaintenanceInterval" class="form-control" />
+                <span asp-validation-for="MaintenanceInterval" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Notes" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Notes" class="form-control" />
+                <span asp-validation-for="Notes" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="CreatedAtUtc" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="CreatedAtUtc" class="form-control" />
+                <span asp-validation-for="CreatedAtUtc" class="text-danger" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

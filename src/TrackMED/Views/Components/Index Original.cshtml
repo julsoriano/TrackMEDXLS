@@ -1,0 +1,130 @@
+﻿@model IEnumerable<TrackMED.Models.Component>
+
+@{
+    ViewBag.Title = "Component";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+@using (Html.BeginForm("Index", "Components", FormMethod.Get))
+{
+    <div class="row">
+        <div class="col-md-6">
+            Find by name: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+            @*@Select System: @Html.DropDownList("SelectedSystem", ViewBag.CurrentFilter as string)*@
+            @*Select System: @Html.DropDownList("SelectedSystem", "All")*@
+            <input type="submit" value="Search" />
+        </div>
+        <div class="form-group">
+            @Html.Label("Select Components", "Select Components", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.DropDownList("SelectComponents", null, ViewBag.CurrentOption as string, htmlAttributes: new { @class = "form-control", @onchange = "this.form.submit()" })
+                @* @Html.DropDownList("SelectComponents", null, ViewBag.CurrentOption as string, htmlAttributes: new { @class = "form-control", @onchange = "this.form.submit()" }) *@
+            </div>
+        </div>
+    </div>
+    <!--
+    <p>
+        Find by name: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+        @*Select System: @Html.DropDownList("SelectedSystem", ViewBag.CurrentFilter as string)*@
+        @*Select System: @Html.DropDownList("SelectedSystem", "All")*@
+        <input type="submit" value="Search" />
+    </p>
+    -->
+
+<br>
+
+<div>
+    <table class="table table-striped table-condensed table-hover">
+        <thead>
+            <tr>
+                <th>
+                    @*@Html.ActionLink(Convert.ToString(@Html.DisplayNameFor(model => model.IMTE)), "Index", new { sortOrder = ViewBag.IMTESortParm })*@
+                    @Html.ActionLink("IMTE", "Index", new { sortOrder = ViewBag.IMTESortParm, selectcomponents = ViewBag.CurrentOptions })
+                </th>
+                <th>
+                    @*@Html.ActionLink(Convert.ToString(@Html.DisplayNameFor(model => model.SerialNumber)), "Index", new { sortOrder = ViewBag.SerialSortParm })*@
+                    @Html.ActionLink("SerialNumber", "Index", new { sortOrder = ViewBag.SerialSortParm, selectcomponents = ViewBag.CurrentOptions })
+                </th>
+                <th>
+                    @*@Html.ActionLink(Convert.ToString(@Html.DisplayNameFor(model => model.Description.Desc)), "Index", new { sortOrder = ViewBag.DescSortParm }) *@
+                    @Html.ActionLink("Description", "Index", new { sortOrder = ViewBag.DescSortParm, selectcomponents = ViewBag.CurrentOptions })
+                </th>
+
+                <th>
+                    @Html.ActionLink("Owner", "Index", new { sortOrder = ViewBag.OwnerSortParm, selectcomponents = ViewBag.CurrentOptions })
+                </th>
+
+                <th>
+                    @Html.ActionLink("Manufacturer", "Index", new { sortOrder = ViewBag.ManSortParm, selectcomponents = ViewBag.CurrentOptions })
+                </th>
+                <th>
+                    @Html.ActionLink("Classification", "Index", new { sortOrder = ViewBag.ClassSortParm, selectcomponents = ViewBag.CurrentOptions })
+                </th>
+                <th>
+                    @Html.ActionLink("Model", "Index", new { sortOrder = ViewBag.ModelSortParm, selectcomponents = ViewBag.CurrentOptions })
+                </th>
+
+                <th>
+                    @Html.ActionLink(Convert.ToString(@Html.DisplayNameFor(model => model.CalibrationDate)), "Index", new { sortOrder = ViewBag.CalSortParm, selectcomponents = ViewBag.CurrentOptions })
+                </th>
+                <th>
+                    @Html.ActionLink(Convert.ToString(@Html.DisplayNameFor(model => model.MaintenanceDate)), "Index", new { sortOrder = ViewBag.MaiSortParm, selectcomponents = ViewBag.CurrentOptions })
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="myTable">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.imte)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.serialnumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description.Desc)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Owner.Desc)
+                    </td>
+                    @*
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Manufacturer.Desc)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Classification.Desc)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Model.Desc)
+                    </td>
+                    *@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CalibrationDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MaintenanceDate)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                        <a href="#!" rel="@item.Id" onclick="deleteRecord(this, 'Components')">Delete</a>
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="col-md-12 text-center">
+    <ul class="pagination pagination-lg pager" id="myPager"></ul>
+</div>
+
+}

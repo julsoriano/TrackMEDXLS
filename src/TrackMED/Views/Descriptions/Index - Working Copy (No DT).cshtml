@@ -1,0 +1,115 @@
+﻿@* @model IEnumerable<TrackMED.Models.Description> *@
+@model TrackMED.ViewModels.DescComponentModel<Description>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<style type="text/css" class="init">
+    td.details-control {
+        background: url('https://datatables.net/examples/resources/details_open.png') no-repeat center center;
+        cursor: pointer;
+    }
+
+    tr.shown td.details-control {
+        background: url('https://datatables.net/examples/resources/details_close.png') no-repeat center center;
+    }
+</style>
+
+<h2>Index</h2>
+
+<p>
+    <!-- @Html.ActionLink("Create New", "Create") -->
+    <a asp-action="Create" id="openDialog">Create New</a>
+</p>
+
+<div>
+    <table class="table table-striped table-condensed table-hover">
+        <thead>
+            <tr>
+                <th></th>
+                <th>@Html.DisplayNameFor(model => model.descRecords[0].Desc)</th>
+                <th>@Html.DisplayNameFor(model => model.descRecords[0].Tag)</th>
+                <th>@Html.DisplayNameFor(model => model.descRecords[0].CreatedAtUtc)</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="myTable">
+            @foreach (var item in Model.descRecords)
+            {
+                <tr class="rowMaster">
+                    <td>
+                        <!--<a href="#!" rel="@item.Id " onclick="showComponents(this, 'Descriptions')">+</a> -->
+                        <a asp-action="Index" asp-route-id="@item.Id">+</a>
+                    </td>
+                    <td>@Html.DisplayFor(modelItem => item.Desc)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Tag)</td>
+                    <td>@Html.DisplayFor(modelItem => item.CreatedAtUtc)</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="editDialog">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <!-- <a asp-route-id="@item.Id" onclick="deleteRecord(this, 'Descriptions')" >Delete</a> -->
+                        <a href="#!" rel="@item.Id" onclick="deleteRecord(this, 'Classifications')">Delete</a>
+                    </td>
+                </tr>
+
+                if (item.Id == Model.Id && Model.linkedComponents.Count > 0)
+                {
+                    <tr class="rowDetail">
+                        <td colspan="4">
+                            <table id="table-component" class="table table-striped table-condensed table-bordered table-component">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>@Html.DisplayNameFor(model => model.linkedComponents[0].imte)</th>
+                                        <th>@Html.DisplayNameFor(model => model.linkedComponents[0].serialnumber)</th>
+                                        <th>@Html.DisplayNameFor(model => model.linkedComponents[0].Model.Desc)</th>
+                                        <th>@Html.DisplayNameFor(model => model.linkedComponents[0].Owner.Desc)</th>
+                                        <th>@Html.DisplayNameFor(model => model.linkedComponents[0].Classification.Desc)</th>
+                                        <th>@Html.DisplayNameFor(model => model.linkedComponents[0].Manufacturer.Desc)</th>
+                                        <th>@Html.DisplayNameFor(model => model.linkedComponents[0].MaintenanceDateTime)</th>
+                                        <th>@Html.DisplayNameFor(model => model.linkedComponents[0].CalibrationDateTime)</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    @foreach (var itemLink in Model.linkedComponents)
+                                    {
+                                        <tr>
+                                            <td></td>
+                                            <td>@Html.DisplayFor(modelItem => itemLink.imte)</td>
+                                            <td>@Html.DisplayFor(modelItem => itemLink.serialnumber)</td>
+                                            <td>@Html.DisplayFor(modelItem => itemLink.Model.Desc)</td>
+                                            <td>@Html.DisplayFor(modelItem => itemLink.Owner.Desc)</td>
+                                            <td>@Html.DisplayFor(modelItem => itemLink.Classification.Desc)</td>
+                                            <td>@Html.DisplayFor(modelItem => itemLink.Manufacturer.Desc)</td>
+                                            <td>@Html.DisplayFor(modelItem => itemLink.MaintenanceDateTime)</td>
+                                            <td>@Html.DisplayFor(modelItem => itemLink.CalibrationDateTime)</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="col-md-12 text-center">
+    <ul class="pagination pagination-lg pager" id="myPager"></ul>
+</div>
+
+<div id="dialog-confirm" title="Delete Record" style="display: none">
+    <p>
+        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+        Are you sure you want to delete this?
+    </p>
+</div>
+
+<div id="dialog-edit" style="display: none">
+</div>
+<div id="dialog-view" style="display: none">
+</div>

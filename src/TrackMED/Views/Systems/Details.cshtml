@@ -1,0 +1,126 @@
+﻿
+
+@model TrackMED.Models.SystemTab
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<style>
+    td, th {
+	    border-bottom: 1px solid #333333;
+	    padding: 6px 16px;
+	    text-align: left;
+    }
+    td:last-child::after { margin-bottom:30px}
+
+    p { margin-top: 30px;}
+</style>
+
+<div>
+    <h4>System Table</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.imte)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.imte)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.serialnumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.serialnumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DeploymentDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DeploymentDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SystemsDescription)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SystemsDescription.Desc)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Owner)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Owner.Desc)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Location)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Location.Desc)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReferenceNo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ReferenceNo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedAtUtc)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CreatedAtUtc)
+        </dd>
+    </dl>
+
+    <div class="form-group">
+        <div class="col-md-12">
+            <table>
+                <tr>
+                    <th>Description</th>
+                    <th>Left Component</th>
+                    <th>Description</th>
+                    <th>Right Component</th>
+                </tr>
+                <tr>
+                    @{
+                        List<Component> leftComponents = ViewBag.leftComponents;
+                        List<Component> rightComponents = ViewBag.rightComponents;
+
+                        // See Enumerable.Zip<TFirst, TSecond, TResult> Method https://msdn.microsoft.com/en-us/library/dd267698(v=vs.100).aspx
+                        var leftandright = leftComponents.Zip(rightComponents, (l, r) => new { Left = l, Right = r });
+
+                        /* Another way of doing the foreach below
+                        foreach (var lr in leftComponents.Zip(rightComponents, Tuple.Create))
+                        {
+                            Console.WriteLine(lr.Item1 + lr.Item2);
+                        }
+                        */
+
+                        foreach (var lr in leftandright)
+                        {
+                            @:<td>  @lr.Left.Description.Desc  </td>
+                            @:<td>  @lr.Left.imte              </td>
+                            @:<td>  @lr.Right.Description.Desc </td>
+                            @:<td>  @lr.Right.imte             </td>
+                            @:</tr><tr>
+                        }
+                        @:</tr>
+                    }
+            </table>
+        </div>
+    </div>
+</div>
+
+<p>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</p>
+

@@ -1,0 +1,113 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net47</TargetFramework>
+    <PreserveCompilationContext>true</PreserveCompilationContext>
+    <AssemblyName>TrackMED</AssemblyName>
+    <OutputType>Exe</OutputType>
+    <PackageId>TrackMED</PackageId>
+    <UserSecretsId>aspnet-TrackMED-c4fa023a-4c5e-4feb-a74f-a02222de773c</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Data\**" />
+    <Compile Remove="DTOs\**" />
+    <Compile Remove="EmailTemplates\**" />
+    <Compile Remove="Views\**" />
+    <Content Remove="Data\**" />
+    <Content Remove="DTOs\**" />
+    <Content Remove="EmailTemplates\**" />
+    <Content Remove="Views\**" />
+    <EmbeddedResource Remove="Data\**" />
+    <EmbeddedResource Remove="DTOs\**" />
+    <EmbeddedResource Remove="EmailTemplates\**" />
+    <EmbeddedResource Remove="Views\**" />
+    <None Remove="Data\**" />
+    <None Remove="DTOs\**" />
+    <None Remove="EmailTemplates\**" />
+    <None Remove="Views\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controllers\AccountController.cs" />
+    <Compile Remove="Controllers\ActivityTypesController.cs" />
+    <Compile Remove="Controllers\ComponentsController.cs" />
+    <Compile Remove="Controllers\DeploymentsController.cs" />
+    <Compile Remove="Controllers\DescriptionsController.cs" />
+    <Compile Remove="Controllers\EquipmentActivitiesController.cs" />
+    <Compile Remove="Controllers\EventsController.cs" />
+    <Compile Remove="Controllers\HomeController.cs" />
+    <Compile Remove="Controllers\LocationsController.cs" />
+    <Compile Remove="Controllers\ManageController.cs" />
+    <Compile Remove="Controllers\Models_ManufacturersController.cs" />
+    <Compile Remove="Controllers\MVCControllerWithHub.cs" />
+    <Compile Remove="Controllers\OwnersController.cs" />
+    <Compile Remove="Controllers\ServiceProvidersController.cs" />
+    <Compile Remove="Controllers\StatusController.cs" />
+    <Compile Remove="Controllers\SystemsController.cs" />
+    <Compile Remove="Controllers\SystemsDescriptionsController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Update="wwwroot\**\*;Areas\**\Views">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="1.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="1.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="1.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="1.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Server.IISIntegration" Version="1.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="1.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="1.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.0.3">
+      <PrivateAssets>All</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="1.0.0">
+      <PrivateAssets>All</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="1.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="1.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="1.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="1.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="1.0.2" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="1.0.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="1.0.0">
+      <PrivateAssets>All</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.3" />
+    <PackageReference Include="Microsoft.Office.Interop.Excel" Version="15.0.4795.1000" />
+    <PackageReference Include="Serilog" Version="2.3.0" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="1.2.0" />
+    <PackageReference Include="Serilog.Sinks.Literate" Version="2.0.0" />
+    <PackageReference Include="Serilog.Sinks.RollingFile" Version="3.1.0" />
+    <PackageReference Include="Serilog.Sinks.Seq" Version="3.0.1" />
+    <PackageReference Include="Serilog.Sinks.Email" Version="2.0.0" />
+    <PackageReference Include="Serilog.Sinks.MongoDB" Version="3.0.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
+    <Exec Command="bower install" />
+    <Exec Command="dotnet bundle" />
+  </Target>
+
+  <ItemGroup>
+    <DotNetCliToolReference Include="BundlerMinifier.Core" Version="2.2.301" />
+    <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="1.0.0" />
+    <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="1.0.0" />
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0" />
+  </ItemGroup>
+
+</Project>
