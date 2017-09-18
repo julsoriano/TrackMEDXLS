@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net47</TargetFramework>
     <PreserveCompilationContext>true</PreserveCompilationContext>
-    <AssemblyName>TrackMED</AssemblyName>
+    <AssemblyName>TrackMEDXLS</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>TrackMED</PackageId>
     <UserSecretsId>aspnet-TrackMED-c4fa023a-4c5e-4feb-a74f-a02222de773c</UserSecretsId>
@@ -13,18 +13,26 @@
     <Compile Remove="Data\**" />
     <Compile Remove="DTOs\**" />
     <Compile Remove="EmailTemplates\**" />
+    <Compile Remove="Models\AccountViewModels\**" />
+    <Compile Remove="Models\ManageViewModels\**" />
     <Compile Remove="Views\**" />
     <Content Remove="Data\**" />
     <Content Remove="DTOs\**" />
     <Content Remove="EmailTemplates\**" />
+    <Content Remove="Models\AccountViewModels\**" />
+    <Content Remove="Models\ManageViewModels\**" />
     <Content Remove="Views\**" />
     <EmbeddedResource Remove="Data\**" />
     <EmbeddedResource Remove="DTOs\**" />
     <EmbeddedResource Remove="EmailTemplates\**" />
+    <EmbeddedResource Remove="Models\AccountViewModels\**" />
+    <EmbeddedResource Remove="Models\ManageViewModels\**" />
     <EmbeddedResource Remove="Views\**" />
     <None Remove="Data\**" />
     <None Remove="DTOs\**" />
     <None Remove="EmailTemplates\**" />
+    <None Remove="Models\AccountViewModels\**" />
+    <None Remove="Models\ManageViewModels\**" />
     <None Remove="Views\**" />
   </ItemGroup>
 

@@ -3,12 +3,12 @@
 using System.Threading;
 using System.Threading.Tasks;
 //using TrackRE.DTOs;                   
-using TrackMED.Models;
+using TrackMEDXLS.Models;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Http;
 
-namespace TrackMED.Services
+namespace TrackMEDXLS.Services
 {
     public interface IEntityService<T> where T: IEntity
     {

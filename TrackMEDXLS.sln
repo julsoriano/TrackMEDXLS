@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{99797ED3-D13
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A39A738F-B2EF-4E0D-A964-F561C59BB089}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrackMED", "src\TrackMED\TrackMED.csproj", "{FBB91E95-4720-4131-B032-611F177815A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrackMEDXLS", "src\TrackMED\TrackMEDXLS.csproj", "{FBB91E95-4720-4131-B032-611F177815A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

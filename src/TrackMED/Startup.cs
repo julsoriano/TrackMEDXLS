@@ -9,9 +9,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-//using TrackMED.Data;
-using TrackMED.Models;
-using TrackMED.Services;
+//using TrackMEDXLS.Data;
+using TrackMEDXLS.Models;
+using TrackMEDXLS.Services;
 using Serilog;
 using Serilog.Sinks.Email;
 using System.Net;
@@ -20,7 +20,7 @@ using Serilog.Events;
 using WilderBlog.Logger;
 using WilderBlog.Services;
 
-namespace TrackMED
+namespace TrackMEDXLS
 {
     public class Startup
     {

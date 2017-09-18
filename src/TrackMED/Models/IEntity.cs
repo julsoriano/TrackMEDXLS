@@ -1,5 +1,5 @@
 ﻿using System;
-namespace TrackMED.Models
+namespace TrackMEDXLS.Models
 {
     public class IEntity
     {

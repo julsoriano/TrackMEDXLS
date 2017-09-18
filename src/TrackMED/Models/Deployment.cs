@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace TrackMED.Models
+namespace TrackMEDXLS.Models
 {
     public class Deployment: IEntity
     {

@@ -1,4 +1,4 @@
-﻿namespace TrackMED
+﻿namespace TrackMEDXLS
 {
     public class Settings
     {
