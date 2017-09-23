@@ -30,12 +30,13 @@ namespace TrackMEDXLS
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
-
+            /*
             if (env.IsDevelopment())
             {
                 // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
                 builder.AddUserSecrets();
             }
+            */
 
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
@@ -67,15 +68,6 @@ namespace TrackMEDXLS
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add framework services.
-            /*
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
-            */
             services.AddMvc();
 
             // Add our Config object so it can be injected; needs "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0"
@@ -89,16 +81,11 @@ namespace TrackMEDXLS
 
             // Added: Add model services
             services.AddSingleton<IEntityService<ActivityType>, EntityService<ActivityType>>();
-            services.AddSingleton<IEntityService<Category>, EntityService<Category>>();
-            services.AddSingleton<IEntityService<Classification>, EntityService<Classification>>();
             services.AddSingleton<IEntityService<Component>, EntityService<Component>>();
             services.AddSingleton<IEntityService<Deployment>, EntityService<Deployment>>();
             services.AddSingleton<IEntityService<Description>, EntityService<Description>>();
             services.AddSingleton<IEntityService<EquipmentActivity>, EntityService<EquipmentActivity>>();
-            services.AddSingleton<IEntityService<Event>, EntityService<Event>>();
             services.AddSingleton<IEntityService<Location>, EntityService<Location>>();
-            services.AddSingleton<IEntityService<Manufacturer>, EntityService<Manufacturer>>();
-            services.AddSingleton<IEntityService<Model>, EntityService<Model>>();
             services.AddSingleton<IEntityService<Model_Manufacturer>, EntityService<Model_Manufacturer>>();
             services.AddSingleton<IEntityService<Owner>, EntityService<Owner>>();
             services.AddSingleton<IEntityService<ProviderOfService>, EntityService<ProviderOfService>>();
@@ -129,10 +116,6 @@ namespace TrackMEDXLS
             }
 
             app.UseStaticFiles();
-
-            //app.UseIdentity();
-
-            // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
 
             app.UseMvc(routes =>
             {

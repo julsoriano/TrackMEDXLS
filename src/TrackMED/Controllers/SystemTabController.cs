@@ -24,16 +24,11 @@ namespace TrackMEDXLS.Controllers
     {
         private readonly IEntityService<SystemTab> _entityService;
         private readonly IEntityService<ActivityType> _activitytypeService;
-        private readonly IEntityService<Category> _categoryService;
-        private readonly IEntityService<Classification> _classificationService;
         private readonly IEntityService<Component> _componentService;
         private readonly IEntityService<Deployment> _deploymentService;
         private readonly IEntityService<Description> _descriptionService;
         private readonly IEntityService<EquipmentActivity> _equipmentactivityService;
-        private readonly IEntityService<Event> _eventService;
         private readonly IEntityService<Location> _locationService;
-        private readonly IEntityService<Manufacturer> _manufacturerService;
-        private readonly IEntityService<Model> _modelService;
         private readonly IEntityService<Model_Manufacturer> _modelmanufacturerService;
         private readonly IEntityService<Owner> _ownerService;
         private readonly IEntityService<ProviderOfService> _serviceproviderService;
@@ -48,16 +43,11 @@ namespace TrackMEDXLS.Controllers
 
         public SystemTabController(IEntityService<SystemTab> entityService,
                                  IEntityService<ActivityType> activitytypeService,
-                                 IEntityService<Category> categoryService,
-                                 IEntityService<Classification> classificationService,
                                  IEntityService<Component> componentService,
                                  IEntityService<Deployment> deploymentService,
                                  IEntityService<Description> descriptionService,
                                  IEntityService<EquipmentActivity> equipmentactivityService,
-                                 IEntityService<Event> eventService,
                                  IEntityService<Location> locationService,
-                                 IEntityService<Manufacturer> manufacturerService,
-                                 IEntityService<Model> modelService,
                                  IEntityService<Model_Manufacturer> modelmanufacturerService,
                                  IEntityService<Owner> ownerService,
                                  IEntityService<ProviderOfService> serviceproviderService,
@@ -70,16 +60,11 @@ namespace TrackMEDXLS.Controllers
         {
             _entityService = entityService;
             _activitytypeService = activitytypeService;
-            _categoryService = categoryService;
-            _classificationService = classificationService;
             _componentService = componentService;
             _deploymentService = deploymentService;
             _descriptionService = descriptionService;
             _equipmentactivityService = equipmentactivityService;
-            _eventService = eventService;
             _locationService = locationService;
-            _manufacturerService = manufacturerService;
-            _modelService = modelService;
             _modelmanufacturerService = modelmanufacturerService;
             _ownerService = ownerService;
             _serviceproviderService = serviceproviderService;
@@ -285,22 +270,6 @@ namespace TrackMEDXLS.Controllers
                                 
                                 break;
 
-                            case "Manufacturer":
-                                if (rCnt == 2) currentSheet = "Manufacturer";
-                                
-                                classInstance = CreateRecord<Manufacturer>(myvalues, nColumns);
-                                _manufacturerService.PostEntityAsync(classInstance);
-
-                                break;
-
-                            case "Classification":
-                                if (rCnt == 2) currentSheet = "Classification";
-
-                                classInstance = CreateRecord<Classification>(myvalues, nColumns);
-                                _classificationService.PostEntityAsync(classInstance);                                   
-                                
-                                break;
-
                             case "Owner":
                                 if (rCnt == 2) currentSheet = "Owner";
 
@@ -397,11 +366,6 @@ namespace TrackMEDXLS.Controllers
 
                                 break;
 
-                            case "Category":
-                                classInstance = CreateRecord<Category>(myvalues, nColumns);
-                                _categoryService.PostEntityAsync(classInstance);
-
-                                break;
                            /*
                             case "Events":
                                 try
