@@ -61,6 +61,8 @@ namespace TrackMEDXLS
                 //.WriteTo.Seq("http://localhost:5341/")
                 .WriteTo.MongoDBCapped(uriMongoDB, collectionName: "logsTrackMED")  // https://github.com/serilog/serilog-sinks-mongodb
                 .CreateLogger();
+
+            Log.Information("TrackMEDXLS is launched");
         }
 
         public IConfigurationRoot Configuration { get; set; }

@@ -79,98 +79,24 @@ namespace TrackMEDXLS.Controllers
 
         
         // GET: Entities
-        public async Task<ActionResult> Index(string id = null)
+        public void Index(string id = null)
         {
-            if (id != null) CleanUp(id);
-
-            if (_settings.MergeOnly)
-            {
-                MergeTables();
-            }
+            if (_settings.MergeOnly) MergeTables();
             else
+            {
+                if (_settings.Initialize)
                 {
-                    if (_settings.Initialize)
-                    {
-                        //await _entityService.DropDatabaseAsync();
-                        InitializeMongoDB();
-                    }
+                //await _entityService.DropDatabaseAsync();
+                InitializeMongoDB();
                 }
-            
-            //await _mailService.SendEmailAsync("jul_soriano@yahoo.com", "Error Creating Components Table", "Please look into this");
-            return View(await _entityService.GetEntitiesAsync());
-        }
+            }
+            Environment.Exit(0);
 
-
-        [HttpPost]
-        //[Route("{id}")]  // WARNING! Do NOT resurrect this line. jQuery POST is laid astray by this
-        public async void CleanUp(string id)
-        {
-            if (id == null) return;           
-
-            var recordToUpdate = await _entityService.GetEntityAsync(id);
-            if (id == null) return;
-
-            // Remove "PENDING" from imteModule
-            if (recordToUpdate.leftComponents != null) CleanUpComponents(recordToUpdate.leftComponents);
-            if (recordToUpdate.rightComponents != null) CleanUpComponents(recordToUpdate.rightComponents);
-
-            return;
+            // If the return type is void, Web API simply returns an empty HTTP response with status code 204 (No Content).
+            // https://docs.microsoft.com/en-us/aspnet/web-api/overview/getting-started-with-aspnet-web-api/action-results
         }
 
         #region Private Helper Methods
-        private async Task<List<Component>> PopulateLeftRightComponents(List<string> lrComponents)
-        {
-            List<Component> lrEntities = new List<Component>();
-
-            foreach (var imte in lrComponents)
-            {
-                var imteToAdd = await _componentService.GetEntityAsync(imte);
-
-                if (imteToAdd != null)
-                {
-                    imteToAdd.Description = !String.IsNullOrEmpty(imteToAdd.DescriptionID)?_descriptionService.GetEntityAsync(imteToAdd.DescriptionID).Result:null;
-                    imteToAdd.Owner = !String.IsNullOrEmpty(imteToAdd.OwnerID)?_ownerService.GetEntityAsync(imteToAdd.OwnerID).Result:null;
-                    //imteToAdd.Model = !String.IsNullOrEmpty(imteToAdd.ModelID)?_modelService.GetEntityAsync(imteToAdd.ModelID).Result:null;
-                    //imteToAdd.Classification = !String.IsNullOrEmpty(imteToAdd.ClassificationID)?_classificationService.GetEntityAsync(imteToAdd.ClassificationID).Result:null;
-                    //imteToAdd.Manufacturer = !String.IsNullOrEmpty(imteToAdd.ManufacturerID)?_manufacturerService.GetEntityAsync(imteToAdd.ManufacturerID).Result:null;            
-                    imteToAdd.Model_Manufacturer = !String.IsNullOrEmpty(imteToAdd.Model_ManufacturerID) ? _modelmanufacturerService.GetEntityAsync(imteToAdd.Model_ManufacturerID).Result : null;
-
-                    lrEntities.Add(imteToAdd);
-                }
-            }
-            return lrEntities;
-        }
-        
-        private async void CleanUpComponents(List<string> lrComponents)
-        {
-            foreach (String s in lrComponents)
-            {
-                Component comp = await _componentService.GetEntityAsync(s);
-                if (comp.imteModule != null)
-                {
-                    if ((comp.imteModule).Contains("PENDING"))
-                    {
-                        int pendingStart = (comp.imteModule).IndexOf("PENDING");
-                        comp.imteModule = comp.imteModule.Substring(0, pendingStart - 1).Trim();
-                        await _componentService.EditEntityAsync(comp);
-                    }
-                }
-            }
-        }
-
-        private bool FindImte(String sToFind, List<string> sToFindFrom)
-        {
-            int cnt = sToFindFrom.Count();
-            for(int i=0; i <= cnt; i++)
-            {
-                if(sToFind == sToFindFrom[i].Substring(1))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
         private void InitializeMongoDB()
         //public static void InitializeMongoDB(IServiceProvider serviceProvider)
         {
@@ -201,21 +127,20 @@ namespace TrackMEDXLS.Controllers
                 path = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase) + excelFileName;
 
                 // open workbook as read-only, See http://csharp.net-informations.com/excel/csharp-read-excel.htm
-                //xlWorkBook = xlApp.Workbooks.Open(@"C:\CedarITT\VisualStudio\Workspaces\RESMED\TrackMED\TrackMED Data.xlsx", 0, true, 5, "", "",
+                //xlWorkBook = xlApp.Workbooks.Open(@"C:\CIT\VS\Workspaces\RESMED\TrackMED\TrackMED Data.xlsx", 0, true, 5, "", "",
                 //    true, Microsoft.Office.Interop.Excel.XlPlatform.xlWindows, "\t", false, false, 0, true, 1, 0);
                 xlWorkBook = xlApp.Workbooks.Open(path, 0, true, 5, "", "", true, Microsoft.Office.Interop.Excel.XlPlatform.xlWindows, "\t", false, false, 0, true, 1, 0);
 
                 int wsCnt = xlWorkBook.Worksheets.Count;
                 int recCnt = 0;
 
-                for (int iSheet = 9; iSheet <= wsCnt; iSheet++)
+                for (int iSheet = 1; iSheet <= wsCnt; iSheet++)
                 {
                     xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(iSheet);
                     range = xlWorkSheet.UsedRange;
                     int nRows = range.Rows.Count;
                     int nColumns = range.Columns.Count;
                     
-
                     for (rCnt = 2; rCnt <= nRows; rCnt++)
                     {
                         /* Use 'Range' property in lieu of the 'get_range' method: Gets as Microsoft.Office.Interop.Excel.Range object that represents a cell or a range of cells. 
@@ -237,33 +162,16 @@ namespace TrackMEDXLS.Controllers
                         switch (xlWorkSheet.Name)
                         {
                             case "EquipmentDescription":
-                                if (rCnt == 2)
-                                {
-                                    currentSheet = "EquipmentDescription";
-
-                                    /*
-                                    List<Description> listDesc = new List<Description>();
-                                    // http://www.asp.net/web-api/overview/web-api-routing-and-actions/create-a-rest-api-with-attribute-routing               
-                                    listDesc.AddRange(new Description[] {
-                                        new Description() { Desc = "Fixture", CreatedAtUtc = DateTime.Now },
-                                        new Description() { Desc = "Module", CreatedAtUtc = DateTime.Now }
-                                        });
-                                    _descriptionService.PostEntitiesAsync(listDesc);
-                                    */
-                                }
+                                if (rCnt == 2) currentSheet = "Description";
 
                                 classInstance = CreateRecord<Description>(myvalues, nColumns);
                                 _descriptionService.PostEntityAsync(classInstance);
+                                recCnt++;
 
                                 break;
 
                             case "Model_Manufacturer":
-                                if (rCnt == 2)
-                                {
-                                    //recCnt.Should().Be(40); // # Description records
-                                    recCnt = 0;
-                                    currentSheet = "Model_Manufacturer";
-                                }
+                                if (rCnt == 2) LogAfterCreatingTable(ref currentSheet, xlWorkSheet.Name, ref recCnt);
 
                                 classInstance = CreateRecord<Model_Manufacturer>(myvalues, nColumns);
                                 _modelmanufacturerService.PostEntityAsync(classInstance);
@@ -271,47 +179,48 @@ namespace TrackMEDXLS.Controllers
                                 break;
 
                             case "Owner":
-                                if (rCnt == 2) currentSheet = "Owner";
+                                if (rCnt == 2) LogAfterCreatingTable(ref currentSheet, xlWorkSheet.Name, ref recCnt);
 
                                 classInstance = CreateRecord<Owner>(myvalues, nColumns);
                                 _ownerService.PostEntityAsync(classInstance);
-                                
+                                recCnt++;
+
                                 break;
 
                             case "Status":
-                                if (rCnt == 2) currentSheet = "Status";
-                                
+                                if (rCnt == 2) LogAfterCreatingTable(ref currentSheet, xlWorkSheet.Name, ref recCnt);
+
                                 classInstance = CreateRecord<Status>(myvalues, nColumns);
                                 _statusService.PostEntityAsync(classInstance);
 
                                 break;
 
                             case "Location":
-                                if (rCnt == 2) currentSheet = "Location";
-                                
+                                if (rCnt == 2) LogAfterCreatingTable(ref currentSheet, xlWorkSheet.Name, ref recCnt);
+
                                 classInstance = CreateRecord<Location>(myvalues, nColumns);
                                 _locationService.PostEntityAsync(classInstance);
                                 
                                 break;
 
                             case "ProviderOfService":
-                                if (rCnt == 2) currentSheet = "ProviderOfService";
-                                
+                                if (rCnt == 2) LogAfterCreatingTable(ref currentSheet, xlWorkSheet.Name, ref recCnt);
+
                                 classInstance = CreateRecord<ProviderOfService>(myvalues, nColumns);
                                 _serviceproviderService.PostEntityAsync(classInstance);
                                 
                                 break;
 
                             case "SystemsDescription":
-                                if (rCnt == 2) currentSheet = "SystemsDescription";
-                                
+                                if (rCnt == 2) LogAfterCreatingTable(ref currentSheet, xlWorkSheet.Name, ref recCnt);
+
                                 classInstance = CreateRecord<SystemsDescription>(myvalues, nColumns);
                                 _systemsdescriptionService.PostEntityAsync(classInstance);
                                 
                                 break;
 
                             case "ActivityType":
-                                if (rCnt == 2) currentSheet = "ActivityType";
+                                if (rCnt == 2) LogAfterCreatingTable(ref currentSheet, xlWorkSheet.Name, ref recCnt);
 
                                 classInstance = CreateRecord<ActivityType>(myvalues, nColumns);
                                 _activitytypeService.PostEntityAsync(classInstance);
@@ -319,8 +228,7 @@ namespace TrackMEDXLS.Controllers
                                 break;
 
                             case "Component": // TrackMEDDataAug2016
-                                if (rCnt == 2) currentSheet = "Component";
-                                
+                                if (rCnt == 2) LogAfterCreatingTable(ref currentSheet, xlWorkSheet.Name, ref recCnt);
 
                                 // http://stackoverflow.com/questions/18993735/how-to-read-single-excel-cell-value
                                 string objDescId = null;
@@ -401,7 +309,7 @@ namespace TrackMEDXLS.Controllers
                                 */
 
                             case "System":
-                                if (rCnt == 2) currentSheet = "System";
+                                if (rCnt == 2) LogAfterCreatingTable(ref currentSheet, xlWorkSheet.Name, ref recCnt);
 
                                 string objSysDescId = null;
                                 if (!String.IsNullOrEmpty((string)(range.Cells[rCnt, 2] as Excel.Range).Value2))
@@ -433,7 +341,7 @@ namespace TrackMEDXLS.Controllers
                                 break;
 
                             case "Deployment":
-                                if (rCnt == 2) currentSheet = "Deployment";
+                                if (rCnt == 2) LogAfterCreatingTable(ref currentSheet, xlWorkSheet.Name, ref recCnt);
 
                                 string objSystemTabId = null;
                                 if (!String.IsNullOrEmpty((string)(range.Cells[rCnt, 3] as Excel.Range).Value2))
@@ -470,8 +378,7 @@ namespace TrackMEDXLS.Controllers
                             
                             case "EquipmentActivity":
 
-                                if (rCnt == 2) currentSheet = "EquipmentActivity";
-                                
+                                if (rCnt == 2) LogAfterCreatingTable(ref currentSheet, xlWorkSheet.Name, ref recCnt);
 
                                 string objEquipmentId = null;
                                 if (!String.IsNullOrEmpty((string)(range.Cells[rCnt, 2] as Excel.Range).Value2))
@@ -865,6 +772,13 @@ namespace TrackMEDXLS.Controllers
                 );
             }
             ViewBag.ComponentDescID = new SelectList(listDesc, "Value", "Text");
+        }
+
+        private void LogAfterCreatingTable(ref string currentSheet, string worksheet, ref int recCnt)
+        {
+            _logger.LogInformation("Fully created table: " + currentSheet + "table, #records = " + recCnt);
+            currentSheet = worksheet;
+            recCnt = 0;
         }
 
         enum ErrorCodes { Valid, SpecialCharacters, InvalidFormat, DuplicateIMTESystem, DuplicateIMTEComponent };
